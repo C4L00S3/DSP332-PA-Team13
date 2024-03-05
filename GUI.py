@@ -67,6 +67,11 @@ class GameGUI:
         self.spin_canvas.pack()
         self.spin = tk.Spinbox(self.spin_canvas, from_=1, to=len(liste)-1, font=("verdana", 15), fg="black")
         self.spin.pack(anchor="center", pady=0)
+        #canva with a button
+        self.button_canvas = tk.Canvas(master)
+        self.button_canvas.pack()
+        self.button = tk.Button(self.button_canvas, text="Play !", font=("Verdana", 15), fg="black")
+        self.button.pack(anchor="center", pady=10)
 
 
 
