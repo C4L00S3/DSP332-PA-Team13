@@ -1,8 +1,8 @@
 class AI(Player):
 
-  def minimaxAlgorithm():
-
+  def minimaxAlgorithm(gameTree):
+    pass
     
 
-  def alphaBetaAlgorithm():
+  def alphaBetaAlgorithm(gameTree):
     pass
