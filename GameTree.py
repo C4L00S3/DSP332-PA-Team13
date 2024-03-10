@@ -87,10 +87,9 @@ class GameTree:
         for child in node.children:
             self.expand(child)
 
-def main():
-    startNums = [2,7,8,7,3,4]
-    initialState = State(startNums.copy(),0,0)
-    tree = GameTree(deepcopy(initialState))
-    tree.rootNode.showNodeTree()
-    print(tree.nodeCount)
-main()
+
+startNums = [2,7,8,7,3,4]
+initialState = State(startNums.copy(),0,0)
+tree = GameTree(deepcopy(initialState))
+tree.rootNode.showNodeTree()
+print(tree.nodeCount)
