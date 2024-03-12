@@ -69,12 +69,6 @@ class Node:
                 return True
         return False
 
-    def checkSameChildState(self,nextState:State)->bool:
-        for child in self.children:
-            if(child.state == nextState):
-                return True
-        return False
-
 class GameTree:
     def __init__(self,initialState:State):
         self.rootNode = Node(initialState)
