@@ -1,7 +1,7 @@
 class Game:
     
-    def __init__(self,randomNumberList, playerList, gameTree):
-        self.randomNumberList = []
+    def __init__(self,size,playerList, gameTree):
+        self.randomNumberList = createRandomList(size)
         self.playerList = playerList
         self.gameTree = gameTree
         
@@ -19,8 +19,6 @@ class Game:
     
     def createRandomList(self, size):
         import random
-        if size < 15 or size > 25:
-            return "Wrong size. It have to be between 15 and 25"
         else:
             self.randomNumberList = [random.randint(1, 9) for x in range(size)]
             return self.randomNumberList
