@@ -23,25 +23,25 @@ class Game:
             self.randomNumberList = [random.randint(1, 9) for x in range(size)]
             return self.randomNumberList
     
-    def gameOver(self, numberList):
-        if len(numberList) == 1:
+    def gameOver(self):
+        if len(self.randomNumberList) == 1:
             return True
         else:
             return False
     
     def move(self,index,player):
-        sum = game.randomNumberList[index]+game.randomNumberList[index+1]
+        sum = self.randomNumberList[index]+self.randomNumberList[index+1]
         score = 0
         
         if(sum>7):
             score = 1
-            game.randomNumberList[index] = 1
+            self.randomNumberList[index] = 1
         elif(sum<7):
             score = -1
-            game.randomNumberList[index] = 3
+            self.randomNumberList[index] = 3
         else:
             score=2
-            game.randomNumberList[index] = 2
+            self.randomNumberList[index] = 2
         
-        game.randomNumberList.pop(index+1)
+        self.randomNumberList.pop(index+1)
         player.add_score(score)
