@@ -24,7 +24,24 @@ class Game:
             return self.randomNumberList
     
     def gameOver(self, numberList):
-        if len(numberList) == 2:
+        if len(numberList) == 1:
             return True
         else:
             return False
+    
+    def move(self,index,player):
+        sum = game.randomNumberList[index]+game.randomNumberList[index+1]
+        score = 0
+        
+        if(sum>7):
+            score = 1
+            game.randomNumberList[index] = 1
+        elif(sum<7):
+            score = -1
+            game.randomNumberList[index] = 3
+        else:
+            score=2
+            game.randomNumberList[index] = 2
+        
+        game.randomNumberList.pop(index+1)
+        player.add_score(score)
