@@ -1,7 +1,8 @@
+import random
 class Game:
     
     def __init__(self,size,playerList, gameTree):
-        self.randomNumberList = createRandomList(size)
+        self.randomNumberList = self.createRandomList(size)
         self.playerList = playerList
         self.gameTree = gameTree
         
@@ -16,12 +17,15 @@ class Game:
         
     def setGameTree(self, newGameTree):
         self.gameTree = newGameTree
+
+    def getRandomNumberList(self):
+        return self.randomNumberList
+    def setRandomNumberList(self, newRandomNumberList):
+        self.randomNumberList = newRandomNumberList
     
     def createRandomList(self, size):
-        import random
-        else:
-            self.randomNumberList = [random.randint(1, 9) for x in range(size)]
-            return self.randomNumberList
+        self.randomNumberList = [random.randint(1, 9) for x in range(size)]
+        return self.randomNumberList
     
     def gameOver(self):
         if len(self.randomNumberList) == 1:
@@ -30,18 +34,18 @@ class Game:
             return False
     
     def move(self,index,player):
-        sum = self.randomNumberList[index]+self.randomNumberList[index+1]
+        sum = self.randomNumberList[index-1]+self.randomNumberList[index]
         score = 0
         
         if(sum>7):
             score = 1
-            self.randomNumberList[index] = 1
+            self.randomNumberList[index-1] = 1
         elif(sum<7):
             score = -1
-            self.randomNumberList[index] = 3
+            self.randomNumberList[index-1] = 3
         else:
             score=2
-            self.randomNumberList[index] = 2
+            self.randomNumberList[index-1] = 2
         
         self.randomNumberList.pop(index+1)
-        player.add_score(score)
+        player.setScore(score)
