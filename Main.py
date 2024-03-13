@@ -15,9 +15,9 @@ def main():
     playerList = [human, computer]
     game_gui.displayStartGameScreen()
 
-    listSize = 0
+    """listSize = 0
     indexActualPlayer = 0
-    chosenAlgorithm = 0
+    chosenAlgorithm = 0"""
 
     def check_game_info():
         if game_gui.getHasChosen() == False:
@@ -56,7 +56,7 @@ def playGame(root, game_gui, game, indexActualPlayer, chosenAlgorithm, playerLis
     def checkHasPlayed(root, indexActualPlayer, playerList):
         if game_gui.getHasPlayed() == False:
             # Check again after 1 second
-            root.after(1000, checkHasPlayed(root, indexActualPlayer, playerList))
+            root.after(1000, checkHasPlayed,root, indexActualPlayer, playerList)
         else:
             #while game.gameOver() != True:
             for i in range(0, 1):

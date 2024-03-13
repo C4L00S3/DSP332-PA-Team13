@@ -179,12 +179,12 @@ class GUI:
         self.button.pack(anchor="center", pady=10)
 
     def playYourTurn(self):
+        self.setHasPlayed(True)
         print("ENTREE DANS LA FONCTION PLAY YOUR TURN")
         indexToMerge = int(self.spin.get())
         self.setIndex(indexToMerge)
         print("INDEX TO MERGE : ", self.indexToMerge)
-        self.setHasPlayed(True)
-        print("FIN DE LA FONCTION START GAME")
+        print("FIN DE LA FONCTION PLAY YOUR TURN")
 
     def endGameScreen(self):
         pass
@@ -220,8 +220,11 @@ class GUI:
 
     def updateGUI(self, randomNumberList, indexActualPlayer, playerList):
         self.displayList(randomNumberList)
+        self.master.update()
         self.displayActualPlayer(indexActualPlayer)
+        self.master.update()
         self.update_scores(playerList[0].getScore(), playerList[1].getScore())
+        self.master.update()
 
 
 
