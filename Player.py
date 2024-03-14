@@ -10,8 +10,3 @@ class Player:
 # Method to increase score by 5 for the player
     def setScore(self, points):
         self.score += points
-        
-# Class methods
-    def move(self, input_index):
-        # Your logic for player move goes here
-        pass  # Placeholder for the move logic

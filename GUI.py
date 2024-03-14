@@ -10,6 +10,7 @@ class GUI:
         self.hasChosen = False
         self.indexToMerge = 0
         self.hasPlayed = False
+        self.indexActualPlayer = 0
 
 
     def setHasChosen(self, hasChosen):
@@ -36,6 +37,10 @@ class GUI:
         return self.hasPlayed
     def setHasPlayed(self, hasPlayed):
         self.hasPlayed = hasPlayed
+    def setIndexActualPlayer(self, indexActualPlayer):
+        self.indexActualPlayer = indexActualPlayer
+    def getIndexActualPlayer(self):
+        return self.indexActualPlayer
 
     def displayStartGameScreen(self):
             for widget in self.master.winfo_children():
@@ -102,7 +107,7 @@ class GUI:
         print("GAME INFO : ", game_info)
         print("FIN DE LA FONCTION START GAME")
 
-    def displayGameScreen(self, master, game):
+    def displayGameScreen(self, master, game, indexActualPlayer, playerList):
         for widget in self.master.winfo_children():
             widget.destroy()
         # Canvas pour les éléments en haut
@@ -134,6 +139,7 @@ class GUI:
         self.computerPlayerLogo = self.computerPlayerLogo.subsample(10, 10)
         self.computerPlayerLabel = tk.Label(self.top_canvas, image=self.computerPlayerLogo)
         self.computerPlayerLabel.pack(side="left", padx=10, pady=10)
+        self.update_scores(playerList[0].getScore(), playerList[1].getScore())
         # Canva pour écrire au dessus de la liste
         self.middle_canvas = tk.Canvas(master)
         self.middle_canvas.pack(side="top", fill="both", expand=True)
@@ -144,9 +150,24 @@ class GUI:
         # Canvas pour la liste au milieu
         self.liste_canvas = tk.Canvas(self.master)
         self.liste_canvas.pack(expand=False, fill="both")
+        #afficher la liste
         # Canvas pour les indices des éléments
         self.index_canvas = tk.Canvas(self.master)
         self.index_canvas.pack(expand=True, fill="both")
+        # parcourir les anciens éléments du canva et les supprimer
+        liste = game.getRandomNumberList()
+        self.liste_canvas.delete("all")
+        self.index_canvas.delete("all")
+        print("LISTE : ", liste)
+        for i, num in enumerate(liste):
+            label_num = tk.Label(self.liste_canvas, text=num, font=("Arial", 16, "bold"), fg="black", relief="solid",
+                                 width=2, height=1)
+            label_num.pack(side="left", padx=10, pady=10)
+
+            label_index = tk.Label(self.index_canvas, text=i + 1, font=("Arial", 16, "bold"), fg="grey", relief="flat",
+                                   width=2, height=1)
+            label_index.pack(side="left", padx=10, pady=10)
+            self.master.update()
         # Canvas pour les index
         self.bottom_canvas = tk.Canvas(master)
         self.bottom_canvas.pack(expand=True, fill="both")
@@ -158,6 +179,18 @@ class GUI:
         self.actualPlayer_canvas.pack()
         self.actualPlayer = tk.Label(self.actualPlayer_canvas, text="Actual Player", font=("verdana", 15), fg="black")
         self.actualPlayer.pack(anchor="center", pady=15)
+        self.actualPlayer_canvas.delete("all")
+        self.master.update()
+        if (indexActualPlayer == 0):
+            self.actualPlayer_canvas.delete("all")
+            self.actualPlayer = tk.Label(self.actualPlayer_canvas, text="Human Player, it's your turn !",
+                                         font=("verdana", 16, "bold"), fg="black")
+            self.actualPlayer.pack()
+        elif (indexActualPlayer == 1):
+            self.actualPlayer_canvas.delete("all")
+            self.actualPlayer = tk.Label(self.actualPlayer_canvas, text="Computer Player, it's your turn !",
+                                         font=("verdana", 16, "bold"), fg="black")
+            self.actualPlayer.pack()
         # Canvas to display the rules
         self.rules_canvas = tk.Canvas(master)
         self.rules_canvas.pack()
@@ -193,18 +226,19 @@ class GUI:
         self.human_player_label.config(text=f"Human Player\nScore: {human_score}")
         self.computer_player_label.config(text=f"Computer Player\nScore: {computer_score}")
 
-    def displayList(self, liste):
-        #delete the old elements from the canvas
+    """def updateList(self, liste):
+        #parcourir les anciens éléments du canva et les supprimer
         self.liste_canvas.delete("all")
         self.index_canvas.delete("all")
-        self.master.update()
-
+        print("LISTE : ", liste)
         for i, num in enumerate(liste):
             label_num = tk.Label(self.liste_canvas, text=num, font=("Arial", 16, "bold"), fg="black", relief="solid", width=2, height=1)
             label_num.pack(side="left", padx=10, pady=10)
 
             label_index = tk.Label(self.index_canvas, text=i+1, font=("Arial", 16, "bold"), fg="grey", relief="flat", width=2, height=1)
             label_index.pack(side="left", padx=10, pady=10)
+            self.master.update()
+
 
     def displayActualPlayer(self, indexActualPlayer):
         self.actualPlayer_canvas.delete("all")
@@ -219,12 +253,12 @@ class GUI:
             self.actualPlayer.pack()
 
     def updateGUI(self, randomNumberList, indexActualPlayer, playerList):
-        self.displayList(randomNumberList)
+        self.updateList(randomNumberList)
         self.master.update()
         self.displayActualPlayer(indexActualPlayer)
         self.master.update()
         self.update_scores(playerList[0].getScore(), playerList[1].getScore())
-        self.master.update()
+        self.master.update()"""
 
 
 

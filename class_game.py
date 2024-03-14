@@ -47,5 +47,5 @@ class Game:
             score=2
             self.randomNumberList[index-1] = 2
         
-        self.randomNumberList.pop(index+1)
+        self.randomNumberList.pop(index)
         player.setScore(score)
