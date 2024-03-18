@@ -27,8 +27,12 @@ def checkStartInfo(game_gui, root, playerList):
             chosenAlgorithm = gameInformationList[2]
             print("INDEX FIRST PLAYER = ", indexActualPlayer)
             game = Game(listSize, playerList, None)
-            # display initial state of the game
+            game_gui.setIndexActualPlayer(indexActualPlayer)
             game_gui.displayGameScreen(game_gui.master, game, indexActualPlayer, playerList)
+            if game_gui.getIndexActualPlayer() == 1:
+                game_gui.setIndexActualPlayer(0)
+            else:
+                game_gui.setIndexActualPlayer(1)
             checkPlayInfo(game_gui, root, game, indexActualPlayer, chosenAlgorithm, playerList)
 
 def checkPlayInfo(game_gui, root, game, indexActualPlayer, chosenAlgorithm, playerList):
