@@ -45,7 +45,7 @@ def checkPlayInfo(game_gui, root, game, indexActualPlayer, chosenAlgorithm, play
             # get the index from the player from the gui
             indexToMerge = game_gui.getIndex()
             print("Index: ", indexToMerge)
-            game.move(indexToMerge, game.getPlayerList()[indexActualPlayer])
+            game.move(indexToMerge, game.getPlayerList()[game_gui.getIndexActualPlayer()])
             game_gui.displayGameScreen(game_gui.master, game, indexActualPlayer, playerList)
             game_gui.setIndexActualPlayer(1)
             game_gui.setHasPlayed(False)

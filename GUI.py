@@ -180,7 +180,7 @@ class GUI:
         self.actualPlayer = tk.Label(self.actualPlayer_canvas, text="Actual Player", font=("verdana", 15), fg="black")
         self.actualPlayer.pack(anchor="center", pady=15)
         self.actualPlayer_canvas.delete("all")
-        self.master.update()
+
         print("INDEX ACTUAL PLAYER : ", indexActualPlayer)
         if self.getIndexActualPlayer() == 0:
             self.actualPlayer_canvas.delete("all")
@@ -211,6 +211,7 @@ class GUI:
         self.button_canvas.pack()
         self.button = tk.Button(self.button_canvas, text="Play !", font=("Verdana", 15), fg="black", command=self.playYourTurn)
         self.button.pack(anchor="center", pady=10)
+        self.master.update()
 
     def playYourTurn(self):
         self.setHasPlayed(True)
