@@ -13,7 +13,6 @@ class State:
         return self.numbers == __value.numbers and self.playerScore == __value.playerScore and self.computerScore == __value.computerScore
 
 class Node:
-    depth = 0
     def __init__(self,state:State,parent: Optional['Node'] = None):
         self.state = state
         self.parent = parent
