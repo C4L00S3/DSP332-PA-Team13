@@ -1,47 +1,67 @@
+from AI import AI
+from Player import Player
+from GUI import GUI
+from class_game import Game
 import tkinter as tk
 
-class GameGUI:
-    def __init__(self, master):
-        self.master = master
-        self.master.title("DSP332 - Practical Assignment - Team 13")
 
-        # Créer un canvas
-        self.canvas = tk.Canvas(master)
-        self.canvas.pack(side="top", fill="both", expand=True)
-
-        # Afficher le humanUserLogo
-        self.humanUserLogo = tk.PhotoImage(file="humanUserLogo.png")
-        self.humanUserLogo = self.humanUserLogo.subsample(10, 10)
-        self.humanUserLabel = tk.Label(self.canvas, image=self.humanUserLogo)
-        self.humanUserLabel.grid(row=0, column=0, sticky="w", padx=10, pady=10)
-
-        self.human_player_label = tk.Label(self.canvas, text="Human Player\nScore: 0")
-        self.human_player_label.grid(row=0, column=1, sticky="w", padx=10, pady=10)
-
-        # Afficher le computerPlayerLogo
-        self.computerPlayerLogo = tk.PhotoImage(file="computerPlayerLogo.png")
-        self.computerPlayerLogo = self.computerPlayerLogo.subsample(10, 10)
-        self.computerPlayerLabel = tk.Label(self.canvas, image=self.computerPlayerLogo)
-        self.computerPlayerLabel.grid(row=0, column=6, sticky="w", padx=10, pady=10)
-
-        self.computer_player_label = tk.Label(self.canvas, text="Computer Player\nScore: 0")
-        self.computer_player_label.grid(row=0, column=5, sticky="e", padx=10, pady=10)
-
-        # Afficher le vsLogo
-        self.vsLogo = tk.PhotoImage(file="vsLogo.png")
-        self.vsLogo = self.vsLogo.subsample(10, 10)
-        self.vsLabel = tk.Label(self.canvas, image=self.vsLogo)
-        self.vsLabel.grid(row=0, column=3, padx=10, pady=10)
-
-    def update_scores(self, human_score, computer_score):
-        self.human_player_label.config(text=f"Human Player\nScore: {human_score}")
-        self.computer_player_label.config(text=f"Computer Player\nScore: {computer_score}")
-
-if __name__ == "__main__":
+def main():
+    # create the window for the gui
     root = tk.Tk()
-    game_gui = GameGUI(root)
-
-    # Exemple de mise à jour des scores
-    game_gui.update_scores(5, 10)
-
+    game_gui = GUI(root)
+    # create the two players and player list
+    human = Player()
+    computer = AI()
+    playerList = [human, computer]
+    game_gui.displayStartGameScreen()
+    checkStartInfo(game_gui, root, playerList)
     root.mainloop()
+def checkStartInfo(game_gui, root, playerList):
+     if game_gui.getHasChosen() == False:
+         # Check again after 1 second
+         root.after(1000, checkStartInfo, game_gui, root, playerList)
+     else:
+            gameInformationList = game_gui.getGameInfo()
+            listSize = gameInformationList[0]
+            indexActualPlayer = gameInformationList[1]
+            chosenAlgorithm = gameInformationList[2]
+
+            game = Game(listSize, playerList, None)
+            # display initial state of the game
+            game_gui.displayGameScreen(game_gui.master, game, indexActualPlayer, playerList)
+            checkPlayInfo(game_gui, root, game, indexActualPlayer, chosenAlgorithm, playerList)
+
+def checkPlayInfo(game_gui, root, game, indexActualPlayer, chosenAlgorithm, playerList):
+    if game_gui.getHasPlayed() == False:
+        print("on est ICI, has played: ", game_gui.getHasPlayed())
+        # Check again after 1 second
+        root.after(1000, checkPlayInfo, game_gui, root, game, indexActualPlayer, chosenAlgorithm, playerList)
+    else:
+        if game_gui.getIndexActualPlayer() == 0:
+            # get the index from the player from the gui
+            indexToMerge = game_gui.getIndex()
+            print("Index: ", indexToMerge)
+            game.move(indexToMerge, game.getPlayerList()[indexActualPlayer])
+            game_gui.displayGameScreen(game_gui.master, game, indexActualPlayer, playerList)
+            game_gui.setIndexActualPlayer(1)
+            game_gui.setHasPlayed(False)
+            print("Has played: ", game_gui.getHasPlayed())
+
+        elif game_gui.getIndexActualPlayer() == 1:
+            # get the index from the player from the gui
+            indexToMerge = game_gui.getIndex()
+            print("Index: ", indexToMerge)
+            game.move(indexToMerge, game.getPlayerList()[indexActualPlayer])
+            game_gui.setHasPlayed(False)
+            game_gui.displayGameScreen(game_gui.master, game, indexActualPlayer, playerList)
+            game_gui.setIndexActualPlayer(0)
+            print("Has played: ", game_gui.getHasPlayed())
+
+        # Check if the game is over
+        if not game.gameOver():
+            # If the game is not over, call checkPlayInfo again after 1 second
+            root.after(1000, checkPlayInfo, game_gui, root, game, indexActualPlayer, chosenAlgorithm, playerList)
+
+
+if __name__ == '__main__':
+    main()

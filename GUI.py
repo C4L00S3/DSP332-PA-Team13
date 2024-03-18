@@ -8,9 +8,9 @@ class GUI:
         self.chooseAlgorithm = 0
         self.gameInfo = []
         self.hasChosen = False
-        self.indexToMerge = 0
+        self.indexToMerge = None
         self.hasPlayed = False
-        self.indexActualPlayer = 0
+        self.indexActualPlayer = None
 
 
     def setHasChosen(self, hasChosen):
@@ -181,12 +181,13 @@ class GUI:
         self.actualPlayer.pack(anchor="center", pady=15)
         self.actualPlayer_canvas.delete("all")
         self.master.update()
-        if (indexActualPlayer == 0):
+        print("INDEX ACTUAL PLAYER : ", indexActualPlayer)
+        if self.getIndexActualPlayer() == 0:
             self.actualPlayer_canvas.delete("all")
             self.actualPlayer = tk.Label(self.actualPlayer_canvas, text="Human Player, it's your turn !",
                                          font=("verdana", 16, "bold"), fg="black")
             self.actualPlayer.pack()
-        elif (indexActualPlayer == 1):
+        elif self.getIndexActualPlayer() == 1:
             self.actualPlayer_canvas.delete("all")
             self.actualPlayer = tk.Label(self.actualPlayer_canvas, text="Computer Player, it's your turn !",
                                          font=("verdana", 16, "bold"), fg="black")
