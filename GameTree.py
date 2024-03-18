@@ -73,17 +73,37 @@ class GameTree:
     def __init__(self,initialState:State):
         self.rootNode = Node(initialState)
         self.nodeCount = 0
-        self.expand(self.rootNode)
 
-    def expand(self,node:Node):
+    def expand(self,node:Node,depth):
         node.expand()
         self.nodeCount+=1
         for child in node.children:
-            self.expand(child)
+            if(child.depth!=depth):
+                self.expand(child,depth)
+
+    def findNode(self,state:State,start:Node)->Node:
+        visited = set()
+        stack = [start]
+        while(stack):
+            node = stack.pop()
+            if(node.state == state):
+                return node
+            if node not in visited:
+                visited.add(node)
+                stack.extend(node.children)
 
 
-startNums = [2,7,8,7,3,4]
-initialState = State(startNums.copy(),0,0)
-tree = GameTree(deepcopy(initialState))
-tree.rootNode.showNodeTree()
-print(tree.nodeCount)
+
+def main():
+    startNums = [2,7,8,5,7,9,3,9,4,8,4,6]
+    initialState = State(startNums.copy(),0,0)
+    treeDepth = 3
+    tree = GameTree(deepcopy(initialState))
+    tree.expand(tree.rootNode,treeDepth)
+    nextNode = tree.findNode(State([2, 7, 8, 5, 7, 9, 3, 9, 3],0,1),tree.rootNode)
+    tree.expand(nextNode,treeDepth+3)
+    nextNode = tree.findNode(State([1, 5, 7, 9, 3, 1],1,3),nextNode)
+    tree.expand(nextNode,treeDepth+3)
+    tree.rootNode.showNodeTree()
+    print(tree.nodeCount)
+main()
