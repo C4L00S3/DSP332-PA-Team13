@@ -91,19 +91,3 @@ class GameTree:
             if node not in visited:
                 visited.add(node)
                 stack.extend(node.children)
-
-
-
-def main():
-    startNums = [2,7,8,5,7,9,3,9,4,8,4,6]
-    initialState = State(startNums.copy(),0,0)
-    treeDepth = 3
-    tree = GameTree(deepcopy(initialState))
-    tree.expand(tree.rootNode,treeDepth)
-    nextNode = tree.findNode(State([2, 7, 8, 5, 7, 9, 3, 9, 3],0,1),tree.rootNode)
-    tree.expand(nextNode,treeDepth+3)
-    nextNode = tree.findNode(State([1, 5, 7, 9, 3, 1],1,3),nextNode)
-    tree.expand(nextNode,treeDepth+3)
-    tree.rootNode.showNodeTree()
-    print(tree.nodeCount)
-main()
