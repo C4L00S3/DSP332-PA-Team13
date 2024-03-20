@@ -1,6 +1,12 @@
 from typing import Optional,List
 from copy import deepcopy
+from enum import Enum
 
+
+class Turn(Enum):
+    MAX = 0
+    MIN = 1
+     
 class State:
     def __init__(self,numbers:list, playerScore:int, computerScore:int) -> None:
         self.numbers = numbers
@@ -14,13 +20,20 @@ class State:
 
 class Node:
     depth = 0
-    def __init__(self,state:State,parent: Optional['Node'] = None):
+    turn = 0
+    def __init__(self,state:State,parent: Optional['Node'] = None,moveIndex=0):
+        self.moveIndex = moveIndex
+        self.heuristicValue = 0
         self.state = state
         self.parent = parent
         self.children:List[Node] = []
         if(parent!=None):
             self.depth=parent.depth+1
-
+        if(self.depth%2==0):
+            self.turn = Turn.MAX
+        else:
+            self.turn = Turn.MIN
+        
     def expand(self):
         
         if(self.isTerminal()):
@@ -30,7 +43,7 @@ class Node:
             nextState = self.makeMove(x,stateCopy)
             if(self.checkSameChildState(nextState)):
                 continue
-            self.children.append(Node(nextState,self))
+            self.children.append(Node(nextState,self,x))
 
     def makeMove(self,index:int,state:State):
         number = state.numbers[index]+state.numbers[index+1]
@@ -60,7 +73,7 @@ class Node:
     def isTerminal(self):
         return len(self.state.numbers)==1
     def __repr__(self):
-        stringToReturn = "Player Score: {}, Computer Score: {}, Numbers: {}".format(self.state.playerScore,self.state.computerScore,self.state.numbers)
+        stringToReturn = "Player Score: {}, Computer Score: {}, Numbers: {},Value:{},Turn:{},Index:{}".format(self.state.playerScore,self.state.computerScore,self.state.numbers,self.heuristicValue,self.turn.name,self.moveIndex)
         return repr(stringToReturn)
 
     def checkSameChildState(self,nextState:State)->bool:
@@ -68,16 +81,24 @@ class Node:
             if(child.state == nextState):
                 return True
         return False
+    def getChildrenValues(self)->List[int]:
+        numberList = []
+        for child in self.children:
+            numberList.append(child.heuristicValue)
+        return numberList
+    
 
 class GameTree:
-    def __init__(self,initialState:State):
+    def __init__(self,initialState:State,depthLimit):
         self.rootNode = Node(initialState)
         self.nodeCount = 0
+        self.depthLimit = depthLimit
+        self.expand(self.rootNode,depthLimit)
 
     def expand(self,node:Node,depth):
         node.expand()
-        self.nodeCount+=1
         for child in node.children:
+            self.nodeCount+=1
             if(child.depth!=depth):
                 self.expand(child,depth)
 
