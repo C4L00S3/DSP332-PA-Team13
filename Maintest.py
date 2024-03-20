@@ -1,5 +1,5 @@
-from AItest import AI 
-from GameTreeTest import GameTree,State
+from AI import AI 
+from GameTree import GameTree,State
 from class_game import Game
 from Player import Player
 
