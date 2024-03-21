@@ -15,7 +15,13 @@ class AI(Player):
       currentNode = queue.pop()
 
       if len(currentNode.children)==0:
-        currentNode.heuristicValue = currentNode.state.playerScore-currentNode.state.computerScore
+        #currentNode.heuristicValue = currentNode.state.playerScore-currentNode.state.computerScore
+        if currentNode.playerScore>currentNode.computerScore:
+          currentnode.heuristicValue=1
+        elif currentNode.playerScore<currentNode.computerScore:
+          currentnode.heuristicValue=-1
+        else:
+          currentnode.heuristicValue=0
       else:
         if(currentNode.turn == Turn.MAX):
           currentNode.heuristicValue = max(currentNode.getChildrenValues())
