@@ -21,18 +21,26 @@ class State:
 class Node:
     depth = 0
     turn = 0
-    def __init__(self,state:State,parent: Optional['Node'] = None,moveIndex=0):
+    def __init__(self,state:State,firstTurn:bool,parent: Optional['Node'] = None,moveIndex=0):
         self.moveIndex = moveIndex
         self.heuristicValue = 0
         self.state = state
         self.parent = parent
         self.children:List[Node] = []
+        self.firstTurn = firstTurn
         if(parent!=None):
             self.depth=parent.depth+1
-        if(self.depth%2==0):
-            self.turn = Turn.MAX
+        
+        if self.firstTurn:
+            if(self.depth%2==0):
+                self.turn = Turn.MAX
+            else:
+                self.turn = Turn.MIN
         else:
-            self.turn = Turn.MIN
+            if(self.depth%2!=0):
+                self.turn = Turn.MAX
+            else:
+                self.turn = Turn.MIN
         
     def expand(self):
         
@@ -43,7 +51,7 @@ class Node:
             nextState = self.makeMove(x,stateCopy)
             if(self.checkSameChildState(nextState)):
                 continue
-            self.children.append(Node(nextState,self,x))
+            self.children.append(Node(nextState,self.firstTurn,self,x))
 
     def makeMove(self,index:int,state:State):
         number = state.numbers[index]+state.numbers[index+1]
@@ -89,8 +97,8 @@ class Node:
     
 
 class GameTree:
-    def __init__(self,initialState:State,depthLimit):
-        self.rootNode = Node(initialState)
+    def __init__(self,initialState:State,depthLimit,firstTurn:bool):
+        self.rootNode = Node(initialState,firstTurn)
         self.nodeCount = 0
         self.depthLimit = depthLimit
         self.expand(self.rootNode,depthLimit)
