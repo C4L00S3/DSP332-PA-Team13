@@ -17,11 +17,11 @@ class AI(Player):
       if len(currentNode.children)==0:
         #currentNode.heuristicValue = currentNode.state.playerScore-currentNode.state.computerScore
         if currentNode.playerScore>currentNode.computerScore:
-          currentnode.heuristicValue=1
+          currentNode.heuristicValue=1
         elif currentNode.playerScore<currentNode.computerScore:
-          currentnode.heuristicValue=-1
+          currentNode.heuristicValue=-1
         else:
-          currentnode.heuristicValue=0
+          currentNode.heuristicValue=0
       else:
         if(currentNode.turn == Turn.MAX):
           currentNode.heuristicValue = max(currentNode.getChildrenValues())
