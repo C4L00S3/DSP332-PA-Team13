@@ -1,38 +1,18 @@
 from Player import Player
-from GameTreeTest import GameTree,Node,Turn
+from GameTree import GameTree,Node,Turn
 from typing import List
 from collections import deque
 
 class AI(Player):
 
-  def evaluateNodes(self,leafNodes:List[Node]):
-    queue:deque[Node] = deque()
-    visited = set()
-
-    queue.extend(leafNodes)
-
-    while queue:
-      currentNode = queue.pop()
-
-      if len(currentNode.children)==0:
-        #currentNode.heuristicValue = currentNode.state.playerScore-currentNode.state.computerScore
-        if currentNode.state.playerScore>currentNode.state.computerScore:
+  def evaluateLeafNode(self,currentNode:Node):
+    if currentNode.state.playerScore>currentNode.state.computerScore:
           currentNode.heuristicValue=1
-        elif currentNode.state.playerScore<currentNode.state.computerScore:
+    elif currentNode.state.playerScore<currentNode.state.computerScore:
           currentNode.heuristicValue=-1
-        else:
+    else:
           currentNode.heuristicValue=0
-      else:
-        if(currentNode.turn == Turn.MAX):
-          currentNode.heuristicValue = max(currentNode.getChildrenValues())
-        else:
-          currentNode.heuristicValue = min(currentNode.getChildrenValues())
-      visited.add(currentNode)
-      if not currentNode.parent:
-        return
-      queue.appendleft(currentNode.parent)
 
-  
   def pickIndex(self,gameTree:GameTree):
     bestMove = gameTree.rootNode
     for child in gameTree.rootNode.children:
@@ -55,9 +35,23 @@ class AI(Player):
     return leafNodes
 
   def minimaxAlgorithm(self,gameTree:GameTree)->int:
-    self.evaluateNodes(self.findLeafNodes(gameTree))
+    queue:deque[Node] = deque()
+    visited = set()
+    queue.extend(self.findLeafNodes(gameTree))
+    while queue:
+      currentNode = queue.pop()
+      if len(currentNode.children)==0:
+        self.evaluateLeafNode(currentNode)
+      else:
+        if(currentNode.turn == Turn.MAX):
+          currentNode.heuristicValue = max(currentNode.getChildrenValues())
+        else:
+          currentNode.heuristicValue = min(currentNode.getChildrenValues())
+      visited.add(currentNode)
+      if not currentNode.parent:
+        break
+      queue.appendleft(currentNode.parent)
     return self.pickIndex(gameTree)
     
-
   def alphaBetaAlgorithm(gameTree:GameTree)->int:
     pass
