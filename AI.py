@@ -16,9 +16,9 @@ class AI(Player):
 
       if len(currentNode.children)==0:
         #currentNode.heuristicValue = currentNode.state.playerScore-currentNode.state.computerScore
-        if currentNode.playerScore>currentNode.computerScore:
+        if currentNode.state.playerScore>currentNode.state.computerScore:
           currentNode.heuristicValue=1
-        elif currentNode.playerScore<currentNode.computerScore:
+        elif currentNode.state.playerScore<currentNode.state.computerScore:
           currentNode.heuristicValue=-1
         else:
           currentNode.heuristicValue=0
