@@ -12,14 +12,16 @@ def update():
 computer = AI()
 human = Player()
 playerList = [human,computer]
-TREE_DEPTH = 3
+TREE_DEPTH = 5
 game = Game(20,playerList,None)
+liste = [2, 4, 7, 5, 1]
+game.setRandomNumberList(liste)
 while not game.gameOver():
     update()
     humanIndex = int(input("Input index: "))
     game.move(humanIndex,human)
     print(game.getRandomNumberList())
-    tree = GameTree(State(game.getRandomNumberList(),human.getScore(),computer.getScore()),TREE_DEPTH)
+    tree = GameTree(State(game.getRandomNumberList(),human.getScore(),computer.getScore()),TREE_DEPTH, 0)
     computerIndex = computer.minimaxAlgorithm(tree)
     game.move(computerIndex,computer)
     print("Computer chose to merge index: ",computerIndex)

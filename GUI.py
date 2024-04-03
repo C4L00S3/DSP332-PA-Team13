@@ -96,7 +96,6 @@ class GUI:
                                           command=self.startGame)
             self.start_button.pack()
     def startGame(self):
-        print("ENTREE DANS LA FONCTION START GAME")
         size_of_list = int(self.spin.get())
         start_player = self.getStartPlayer()
         chosen_algorithm = self.getChooseAlgorithm()
@@ -104,8 +103,7 @@ class GUI:
         game_info = [size_of_list, start_player, chosen_algorithm]
         self.setGameInfo(game_info)
         self.setHasChosen(True)
-        print("GAME INFO : ", game_info)
-        print("FIN DE LA FONCTION START GAME")
+        print("GAME INFO : ", self.getGameInfo())
 
     def displayGameScreen(self, master, game, indexActualPlayer, playerList):
         for widget in self.master.winfo_children():
@@ -181,7 +179,6 @@ class GUI:
         self.actualPlayer.pack(anchor="center", pady=15)
         self.actualPlayer_canvas.delete("all")
 
-        print("INDEX ACTUAL PLAYER : ", indexActualPlayer)
         if self.getIndexActualPlayer() == 0:
             self.actualPlayer_canvas.delete("all")
             self.actualPlayer = tk.Label(self.actualPlayer_canvas, text="Human Player, it's your turn !",
@@ -189,14 +186,19 @@ class GUI:
             self.actualPlayer.pack()
         elif self.getIndexActualPlayer() == 1:
             self.actualPlayer_canvas.delete("all")
-            self.actualPlayer = tk.Label(self.actualPlayer_canvas, text="Computer Player, it's your turn !",
+            self.actualPlayer = tk.Label(self.actualPlayer_canvas, text="Computer Player, it's your turn !\n",
                                          font=("verdana", 16, "bold"), fg="black")
             self.actualPlayer.pack()
+            #canva to display the rules
+            self.rules_canvas = tk.Canvas(master)
+            self.rules_canvas.pack()
+            self.rules = tk.Label(self.rules_canvas,text="When it's Computer's turn, press play to let the AI play.\n",font=("verdana", 13), fg="black")
+            self.rules.pack(anchor="center", pady=0)
         # Canvas to display the rules
         self.rules_canvas = tk.Canvas(master)
         self.rules_canvas.pack()
         self.rules = tk.Label(self.rules_canvas,
-                              text="Enter the index of the first of the two boxes you wish to merge : ",
+                              text="\nEnter the index of the first of the two boxes you wish to merge : ",
                               font=("verdana", 15), fg="black")
         self.rules.pack(anchor="center", pady=0)
 
@@ -209,17 +211,24 @@ class GUI:
         # canva with a button
         self.button_canvas = tk.Canvas(master)
         self.button_canvas.pack()
-        self.button = tk.Button(self.button_canvas, text="Play !", font=("Verdana", 15), fg="black", command=self.playYourTurn)
+        self.button = tk.Button(self.button_canvas, text="Play !", font=("Verdana", 15), fg="black", command=lambda: self.playYourTurn())
         self.button.pack(anchor="center", pady=10)
         self.master.update()
 
     def playYourTurn(self):
-        self.setHasPlayed(True)
         print("ENTREE DANS LA FONCTION PLAY YOUR TURN")
-        indexToMerge = int(self.spin.get())
-        self.setIndex(indexToMerge)
-        print("INDEX TO MERGE : ", self.indexToMerge)
-        print("FIN DE LA FONCTION PLAY YOUR TURN")
+        indexActualPlayer = self.getIndexActualPlayer()
+        print("Actual Player : ", indexActualPlayer)
+        if indexActualPlayer == 0:
+            self.setHasPlayed(True)
+            print("ENTREE DANS LA FONCTION PLAY YOUR TURN")
+            indexToMerge = int(self.spin.get())
+            self.setIndex(indexToMerge)
+            print("INDEX TO MERGE : ", self.indexToMerge)
+            print("FIN DE LA FONCTION PLAY YOUR TURN")
+        elif indexActualPlayer == 1:
+            self.setHasPlayed(True)
+            print("AI PLAY HIS TURN")
 
     def endGameScreen(self):
         pass

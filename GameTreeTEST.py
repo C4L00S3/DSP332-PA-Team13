@@ -72,3 +72,5 @@ class GameTree:
             if node not in visited:
                 visited.add(node)
                 stack.extend(node.children_generator)
+
+
