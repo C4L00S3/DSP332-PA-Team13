@@ -63,18 +63,17 @@ def checkPlayInfo(game_gui, root, game, indexActualPlayer, chosenAlgorithm, play
                 game_gui.setIndexActualPlayer(0)
                 game_gui.setHasPlayed(False)
                 game_gui.displayGameScreen(game_gui.master, game, indexActualPlayer, playerList)
-
-            """
-        else:
-            # get the index from the player from the gui
-            indexToMerge = game_gui.getIndex()
-            print("Index: ", indexToMerge)
-            game.move(indexToMerge, game.getPlayerList()[indexActualPlayer])
-            game_gui.setHasPlayed(False)
-            game_gui.displayGameScreen(game_gui.master, game, indexActualPlayer, playerList)
-            game_gui.setIndexActualPlayer(0)
-            print("Has played: ", game_gui.getHasPlayed())
-            print("Index actual player: ", game_gui.getIndexActualPlayer())"""
+            elif chosenAlgorithm == 1:
+                human = game.getPlayerList()[0]
+                computer = game.getPlayerList()[1]
+                tree = GameTree(State(game.getRandomNumberList(), human.getScore(), computer.getScore()), 5, 0)
+                time.sleep(1)
+                computerIndex = computer.alphaBetaAlgorithm(tree)
+                game.move(computerIndex, computer)
+                print("Computer chose to merge index: ", computerIndex)
+                game_gui.setIndexActualPlayer(0)
+                game_gui.setHasPlayed(False)
+                game_gui.displayGameScreen(game_gui.master, game, indexActualPlayer, playerList)
 
         # Check if the game is over
         if not game.gameOver():

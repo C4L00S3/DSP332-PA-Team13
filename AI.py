@@ -52,6 +52,35 @@ class AI(Player):
         break
       queue.appendleft(currentNode.parent)
     return self.pickIndex(gameTree)
-    
-  def alphaBetaAlgorithm(gameTree:GameTree)->int:
-    pass
+
+  def alphaBetaAlgorithm(self, gameTree: GameTree) -> int:
+      def alphaBeta(node: Node, depth: int, alpha: float, beta: float, maximizingPlayer: bool) -> float:
+          if depth == 0 or len(node.children) == 0:
+              self.evaluateLeafNode(node)
+              return node.heuristicValue
+
+          if maximizingPlayer:
+              value = float('-inf')
+              for child in node.children:
+                  value = max(value, alphaBeta(child, depth - 1, alpha, beta, False))
+                  alpha = max(alpha, value)
+                  if alpha >= beta:
+                      break  # Beta cut-off
+              return value
+          else:
+              value = float('inf')
+              for child in node.children:
+                  value = min(value, alphaBeta(child, depth - 1, alpha, beta, True))
+                  beta = min(beta, value)
+                  if beta <= alpha:
+                      break  # Alpha cut-off
+              return value
+
+      bestValue = float('-inf')
+      bestMoveIndex = -1
+      for child in gameTree.rootNode.children:
+          value = alphaBeta(child, float('inf'), float('-inf'), float('inf'), False)
+          if value > bestValue:
+              bestValue = value
+              bestMoveIndex = child.moveIndex
+      return bestMoveIndex

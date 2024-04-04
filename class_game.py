@@ -24,11 +24,12 @@ class Game:
         self.randomNumberList = newRandomNumberList
     
     def createRandomList(self, size):
-        self.randomNumberList = [random.randint(1, 9) for x in range(size)]
-        return self.randomNumberList
+        testList = [2, 4, 7, 5, 1]
+        self.randomNumberList = testList #[random.randint(1, 9) for x in range(size)]
+        return testList
     
     def gameOver(self):
-        if len(self.randomNumberList) == 1:
+        if len(self.randomNumberList) < 2:
             return True
         else:
             return False
