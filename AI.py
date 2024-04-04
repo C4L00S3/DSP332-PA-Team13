@@ -53,8 +53,8 @@ class AI(Player):
       queue.appendleft(currentNode.parent)
     return self.pickIndex(gameTree)
 
-  def alphaBetaAlgorithm(self, gameTree: GameTree) -> int:
-      def alphaBeta(node: Node, depth: int, alpha: float, beta: float, maximizingPlayer: bool) -> float:
+  def alphaBetaAlgorithm(self, gameTree: GameTree):
+      def alphaBeta(node: Node, depth: int, alpha: float, beta: float, maximizingPlayer: bool):
           if depth == 0 or len(node.children) == 0:
               self.evaluateLeafNode(node)
               return node.heuristicValue

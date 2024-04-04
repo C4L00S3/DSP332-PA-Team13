@@ -184,6 +184,18 @@ class GUI:
             self.actualPlayer = tk.Label(self.actualPlayer_canvas, text="Human Player, it's your turn !",
                                          font=("verdana", 16, "bold"), fg="black")
             self.actualPlayer.pack()
+            self.rules_canvas = tk.Canvas(master)
+            self.rules_canvas.pack()
+            self.rules = tk.Label(self.rules_canvas,
+                                  text="\nEnter the index of the first of the two boxes you wish to merge : ",
+                                  font=("verdana", 15), fg="black")
+            self.rules.pack(anchor="center", pady=0)
+
+            self.spin_canvas = tk.Canvas(master)
+            self.spin_canvas.pack()
+            self.spin = tk.Spinbox(self.spin_canvas, from_=1, to=len(game.getRandomNumberList()) - 1,
+                                   font=("verdana", 15), fg="black")
+            self.spin.pack(anchor="center", pady=0)
         elif self.getIndexActualPlayer() == 1:
             self.actualPlayer_canvas.delete("all")
             self.actualPlayer = tk.Label(self.actualPlayer_canvas, text="Computer Player, it's your turn !\n",
@@ -194,21 +206,7 @@ class GUI:
             self.rules_canvas.pack()
             self.rules = tk.Label(self.rules_canvas,text="When it's Computer's turn, press play to let the AI play.\n",font=("verdana", 13), fg="black")
             self.rules.pack(anchor="center", pady=0)
-        # Canvas to display the rules
-        self.rules_canvas = tk.Canvas(master)
-        self.rules_canvas.pack()
-        self.rules = tk.Label(self.rules_canvas,
-                              text="\nEnter the index of the first of the two boxes you wish to merge : ",
-                              font=("verdana", 15), fg="black")
-        self.rules.pack(anchor="center", pady=0)
 
-        # canva with a spinbox
-        self.spin_canvas = tk.Canvas(master)
-        self.spin_canvas.pack()
-        self.spin = tk.Spinbox(self.spin_canvas, from_=1, to=len(game.getRandomNumberList()) - 1, font=("verdana", 15), fg="black")
-        self.spin.pack(anchor="center", pady=0)
-
-        # canva with a button
         self.button_canvas = tk.Canvas(master)
         self.button_canvas.pack()
         self.button = tk.Button(self.button_canvas, text="Play !", font=("Verdana", 15), fg="black", command=lambda: self.playYourTurn())

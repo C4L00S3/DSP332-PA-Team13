@@ -73,7 +73,8 @@ def checkPlayInfo(game_gui, root, game, indexActualPlayer, chosenAlgorithm, play
                 print("Computer chose to merge index: ", computerIndex)
                 game_gui.setIndexActualPlayer(0)
                 game_gui.setHasPlayed(False)
-                game_gui.displayGameScreen(game_gui.master, game, indexActualPlayer, playerList)
+                if not game.gameOver():
+                    game_gui.displayGameScreen(game_gui.master, game, indexActualPlayer, playerList)
 
         # Check if the game is over
         if not game.gameOver():
