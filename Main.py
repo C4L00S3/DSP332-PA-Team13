@@ -39,8 +39,7 @@ def checkStartInfo(game_gui, root, playerList):
 def checkPlayInfo(game_gui, root, game, indexActualPlayer, chosenAlgorithm, playerList):
     if game_gui.getHasPlayed() == False:
         print("on est ICI, has played: ", game_gui.getHasPlayed())
-        # Check again after 1 second
-        root.after(1000, checkPlayInfo, game_gui, root, game, indexActualPlayer, chosenAlgorithm, playerList)
+        #root.after(1000, checkPlayInfo, game_gui, root, game, indexActualPlayer, chosenAlgorithm, playerList)
     else:
         if game_gui.getIndexActualPlayer() == 0:
             # get the index from the player from the gui
@@ -48,7 +47,10 @@ def checkPlayInfo(game_gui, root, game, indexActualPlayer, chosenAlgorithm, play
             game.move(indexToMerge, game.getPlayerList()[game_gui.getIndexActualPlayer()])
             game_gui.setIndexActualPlayer(1)
             game_gui.setHasPlayed(False)
-            game_gui.displayGameScreen(game_gui.master, game, indexActualPlayer, playerList)
+            if game.gameOver():
+                endGame(game_gui, game,root)
+            else:
+                game_gui.displayGameScreen(game_gui.master, game, indexActualPlayer, playerList)
 
         elif game_gui.getIndexActualPlayer() == 1:
             if chosenAlgorithm == 0:
@@ -58,11 +60,13 @@ def checkPlayInfo(game_gui, root, game, indexActualPlayer, chosenAlgorithm, play
                 time.sleep(2)
                 computerIndex = computer.minimaxAlgorithm(tree)
                 print("Computer chose to merge index: ", computerIndex)
-                time.sleep(2)
                 game.move(computerIndex, computer)
                 game_gui.setIndexActualPlayer(0)
                 game_gui.setHasPlayed(False)
-                game_gui.displayGameScreen(game_gui.master, game, indexActualPlayer, playerList)
+                if game.gameOver():
+                    endGame(game_gui, game, root)
+                else:
+                    game_gui.displayGameScreen(game_gui.master, game, indexActualPlayer, playerList, AIChoice=str(computerIndex+1))
             elif chosenAlgorithm == 1:
                 human = game.getPlayerList()[0]
                 computer = game.getPlayerList()[1]
@@ -73,13 +77,24 @@ def checkPlayInfo(game_gui, root, game, indexActualPlayer, chosenAlgorithm, play
                 print("Computer chose to merge index: ", computerIndex)
                 game_gui.setIndexActualPlayer(0)
                 game_gui.setHasPlayed(False)
-                if not game.gameOver():
-                    game_gui.displayGameScreen(game_gui.master, game, indexActualPlayer, playerList)
+                if game.gameOver():
+                    endGame(game_gui, game, root)
+                else:
+                    game_gui.displayGameScreen(game_gui.master, game, indexActualPlayer, playerList, AIChoice=str(computerIndex+1))
 
-        # Check if the game is over
-        if not game.gameOver():
-            # If the game is not over, call checkPlayInfo again after 1 second
-            root.after(1000, checkPlayInfo, game_gui, root, game, indexActualPlayer, chosenAlgorithm, playerList)
+    if not game.gameOver():
+        root.after(1000, checkPlayInfo, game_gui, root, game, indexActualPlayer, chosenAlgorithm, playerList)
+    else:
+        endGame(game_gui, game, root)
+
+def endGame(game_gui, game, root):
+    game_gui.displayEndGameScreen(game)
+    if game.getReplay() == True:
+        #fermer la fenetre
+        game_gui.master.destroy()
+        main()
+    else:
+        root.after(1000, endGame, game_gui, game, root)
 
 
 if __name__ == '__main__':

@@ -5,6 +5,12 @@ class Game:
         self.randomNumberList = self.createRandomList(size)
         self.playerList = playerList
         self.gameTree = gameTree
+        self.replay = False
+
+    def setReplay(self, replay):
+        self.replay = replay
+    def getReplay(self):
+        return self.replay
         
     def getPlayerList(self):
         return self.playerList
@@ -24,9 +30,9 @@ class Game:
         self.randomNumberList = newRandomNumberList
     
     def createRandomList(self, size):
-        testList = [2, 4, 7, 5, 1]
-        self.randomNumberList = testList #[random.randint(1, 9) for x in range(size)]
-        return testList
+        #testList = [2, 4, 7, 5, 1]
+        self.randomNumberList = [random.randint(1, 9) for x in range(size)] #testList
+        return self.randomNumberList
     
     def gameOver(self):
         if len(self.randomNumberList) < 2:

@@ -19,7 +19,7 @@ class AI(Player):
       if child.heuristicValue == bestMove.heuristicValue:
         bestMove = child
     return bestMove.moveIndex
-      
+
 
   def findLeafNodes(self,gameTree:GameTree)->List[Node]:
     visited = set()
@@ -53,8 +53,8 @@ class AI(Player):
       queue.appendleft(currentNode.parent)
     return self.pickIndex(gameTree)
 
-  def alphaBetaAlgorithm(self, gameTree: GameTree):
-      def alphaBeta(node: Node, depth: int, alpha: float, beta: float, maximizingPlayer: bool):
+  def alphaBetaAlgorithm(self, gameTree):
+      def alphaBeta(node, depth, alpha, beta, maximizingPlayer):
           if depth == 0 or len(node.children) == 0:
               self.evaluateLeafNode(node)
               return node.heuristicValue

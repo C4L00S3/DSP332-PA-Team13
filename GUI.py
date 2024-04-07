@@ -105,7 +105,7 @@ class GUI:
         self.setHasChosen(True)
         print("GAME INFO : ", self.getGameInfo())
 
-    def displayGameScreen(self, master, game, indexActualPlayer, playerList):
+    def displayGameScreen(self, master, game, indexActualPlayer, playerList, AIChoice = "Nothing"):
         for widget in self.master.winfo_children():
             widget.destroy()
         # Canvas pour les éléments en haut
@@ -184,6 +184,13 @@ class GUI:
             self.actualPlayer = tk.Label(self.actualPlayer_canvas, text="Human Player, it's your turn !",
                                          font=("verdana", 16, "bold"), fg="black")
             self.actualPlayer.pack()
+            #canva pour afficher le choix de l'IA
+            self.AIChoice_canvas = tk.Canvas(master)
+            self.AIChoice_canvas.pack()
+            text = "AI just played : " + AIChoice
+            self.AIChoice = tk.Label(self.AIChoice_canvas, text=text, font=("verdana", 15), fg="black")
+            self.AIChoice.pack(anchor="center", pady=0)
+
             self.rules_canvas = tk.Canvas(master)
             self.rules_canvas.pack()
             self.rules = tk.Label(self.rules_canvas,
@@ -228,56 +235,44 @@ class GUI:
             self.setHasPlayed(True)
             print("AI PLAY HIS TURN")
 
-    def endGameScreen(self):
-        pass
+    def displayEndGameScreen(self, game):
+        for widget in self.master.winfo_children():
+            widget.destroy()
+
+        self.gameOver_canvas = tk.Canvas(self.master)
+        self.gameOver_canvas.pack()
+        self.gameOver = tk.Label(self.gameOver_canvas, text="Game Over !", font=("verdana", 20, "bold"), fg="black")
+        self.gameOver.pack(anchor="center", pady=15)
+        self.score_canvas = tk.Canvas(self.master)
+        self.score_canvas.pack()
+        humanScore = str(game.getPlayerList()[0].getScore())
+        computerScore = str(game.getPlayerList()[1].getScore())
+        self.score = tk.Label(self.score_canvas, text="Computer Score  = "+computerScore+" VS Human Score = "+humanScore, font=("verdana", 20), fg="black")
+        self.score.pack(anchor="center", pady=15)
+        if humanScore>computerScore:
+            self.winner_canvas = tk.Canvas(self.master)
+            self.winner_canvas.pack()
+            self.winner = tk.Label(self.winner_canvas, text="Human Player Win !", font=("verdana", 20, "bold"), fg="black")
+            self.winner.pack(anchor="center", pady=15)
+        elif humanScore<computerScore:
+            self.winner_canvas = tk.Canvas(self.master)
+            self.winner_canvas.pack()
+            self.winner = tk.Label(self.winner_canvas, text="Computer Player Win !", font=("verdana", 20, "bold"), fg="black")
+            self.winner.pack(anchor="center", pady=15)
+        else:
+            self.winner_canvas = tk.Canvas(self.master)
+            self.winner_canvas.pack()
+            self.winner = tk.Label(self.winner_canvas, text="It's a draw !", font=("verdana", 20, "bold"), fg="black")
+            self.winner.pack(anchor="center", pady=15)
+        #bouton pour rejouer
+        self.replay_canvas = tk.Canvas(self.master)
+        self.replay_canvas.pack()
+        self.replay = tk.Button(self.replay_canvas, text="Play again !", font=("Verdana", 15), fg="black", command=lambda:self.playAgain(game))
+        self.replay.pack(anchor="center", pady=15)
+    def playAgain(self, game):
+        game.setReplay(True)
 
     def update_scores(self, human_score, computer_score):
         self.human_player_label.config(text=f"Human Player\nScore: {human_score}")
         self.computer_player_label.config(text=f"Computer Player\nScore: {computer_score}")
 
-    """def updateList(self, liste):
-        #parcourir les anciens éléments du canva et les supprimer
-        self.liste_canvas.delete("all")
-        self.index_canvas.delete("all")
-        print("LISTE : ", liste)
-        for i, num in enumerate(liste):
-            label_num = tk.Label(self.liste_canvas, text=num, font=("Arial", 16, "bold"), fg="black", relief="solid", width=2, height=1)
-            label_num.pack(side="left", padx=10, pady=10)
-
-            label_index = tk.Label(self.index_canvas, text=i+1, font=("Arial", 16, "bold"), fg="grey", relief="flat", width=2, height=1)
-            label_index.pack(side="left", padx=10, pady=10)
-            self.master.update()
-
-
-    def displayActualPlayer(self, indexActualPlayer):
-        self.actualPlayer_canvas.delete("all")
-        self.master.update()
-        if (indexActualPlayer == 0):
-            self.actualPlayer_canvas.delete("all")
-            self.actualPlayer = tk.Label(self.actualPlayer_canvas, text="Human Player, it's your turn !", font=("verdana", 16, "bold"), fg="black")
-            self.actualPlayer.pack()
-        elif (indexActualPlayer == 1):
-            self.actualPlayer_canvas.delete("all")
-            self.actualPlayer = tk.Label(self.actualPlayer_canvas, text="Computer Player, it's your Turn", font=("verdana", 16, "bold"), fg="black")
-            self.actualPlayer.pack()
-
-    def updateGUI(self, randomNumberList, indexActualPlayer, playerList):
-        self.updateList(randomNumberList)
-        self.master.update()
-        self.displayActualPlayer(indexActualPlayer)
-        self.master.update()
-        self.update_scores(playerList[0].getScore(), playerList[1].getScore())
-        self.master.update()"""
-
-
-
-
-"""if __name__ == "__main__":
-    root = tk.Tk()
-    game_gui = GUI(root)
-
-    # Exemple de mise à jour des scores
-    game_gui.update_scores(5, 10)
-    game_gui.displayList(liste)
-
-    root.mainloop()"""
