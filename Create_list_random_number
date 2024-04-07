@@ -1,8 +1,0 @@
-import random
-
-def list_random(size):
-    if size < 15 or size > 25:
-        return "Wrong size. It have to be between 15 and 25"
-    else:
-        random_numbers = [random.randint(1, 9) for x in range(size)]
-        return random_numbers
