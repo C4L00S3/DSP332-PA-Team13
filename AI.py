@@ -53,7 +53,7 @@ class AI(Player):
       queue.appendleft(currentNode.parent)
     return self.pickIndex(gameTree)
 
-  def alphaBetaAlgorithm(self, gameTree):
+  def alphaBetaAlgorithm(self, gameTree, isMax):
       def alphaBeta(node, depth, alpha, beta, maximizingPlayer):
           if depth == 0 or len(node.children) == 0:
               self.evaluateLeafNode(node)
@@ -62,7 +62,7 @@ class AI(Player):
           if maximizingPlayer:
               value = float('-inf')
               for child in node.children:
-                  value = max(value, alphaBeta(child, depth - 1, alpha, beta, False))
+                  value = max(value, alphaBeta(child, depth - 1, alpha, beta, maximizingPlayer))
                   alpha = max(alpha, value)
                   if alpha >= beta:
                       break  # Beta cut-off
@@ -70,7 +70,7 @@ class AI(Player):
           else:
               value = float('inf')
               for child in node.children:
-                  value = min(value, alphaBeta(child, depth - 1, alpha, beta, True))
+                  value = min(value, alphaBeta(child, depth - 1, alpha, beta, maximizingPlayer))
                   beta = min(beta, value)
                   if beta <= alpha:
                       break  # Alpha cut-off
@@ -79,7 +79,7 @@ class AI(Player):
       bestValue = float('-inf')
       bestMoveIndex = -1
       for child in gameTree.rootNode.children:
-          value = alphaBeta(child, float('inf'), float('-inf'), float('inf'), False)
+          value = alphaBeta(child, float('inf'), float('-inf'), float('inf'), isMax)
           if value > bestValue:
               bestValue = value
               bestMoveIndex = child.moveIndex

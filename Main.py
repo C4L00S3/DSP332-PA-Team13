@@ -53,6 +53,10 @@ def checkPlayInfo(game_gui, root, game, indexActualPlayer, chosenAlgorithm, play
                 game_gui.displayGameScreen(game_gui.master, game, indexActualPlayer, playerList)
 
         elif game_gui.getIndexActualPlayer() == 1:
+            if game_gui.getGameInfo()[1] == 1:
+                isMax = True
+            else:
+                isMax = False
             if chosenAlgorithm == 0:
                 human = game.getPlayerList()[0]
                 computer = game.getPlayerList()[1]
@@ -72,7 +76,7 @@ def checkPlayInfo(game_gui, root, game, indexActualPlayer, chosenAlgorithm, play
                 computer = game.getPlayerList()[1]
                 tree = GameTree(State(game.getRandomNumberList(), human.getScore(), computer.getScore()), 5, 0)
                 time.sleep(1)
-                computerIndex = computer.alphaBetaAlgorithm(tree)
+                computerIndex = computer.alphaBetaAlgorithm(tree, isMax)
                 game.move(computerIndex, computer)
                 print("Computer chose to merge index: ", computerIndex)
                 game_gui.setIndexActualPlayer(0)
