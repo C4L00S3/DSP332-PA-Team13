@@ -221,19 +221,13 @@ class GUI:
         self.master.update()
 
     def playYourTurn(self):
-        print("ENTREE DANS LA FONCTION PLAY YOUR TURN")
         indexActualPlayer = self.getIndexActualPlayer()
-        print("Actual Player : ", indexActualPlayer)
         if indexActualPlayer == 0:
             self.setHasPlayed(True)
-            print("ENTREE DANS LA FONCTION PLAY YOUR TURN")
             indexToMerge = int(self.spin.get())
             self.setIndex(indexToMerge)
-            print("INDEX TO MERGE : ", self.indexToMerge)
-            print("FIN DE LA FONCTION PLAY YOUR TURN")
         elif indexActualPlayer == 1:
             self.setHasPlayed(True)
-            print("AI PLAY HIS TURN")
 
     def displayEndGameScreen(self, game):
         for widget in self.master.winfo_children():
